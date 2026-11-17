@@ -1,34 +1,16 @@
-import "dotenv/config";
-import cors from "cors";
-import express from "express";
 import mongoose from "mongoose";
-import connectToDatabase from "./config/db.js";
-import errorHandler from "./middleware/errorHandler.js";
-import notFound from "./middleware/notFound.js";
-import healthRoutes from "./routes/healthRoutes.js";
-import playerRoutes from "./routes/playerRoutes.js";
-import leaderboardRoutes from "./routes/leaderboardRoutes.js";
+import app from "./app.js";
+import { connectToDatabase } from "./config/db.js";
 
-const app = express();
 const port = Number(process.env.PORT) || 5000;
-const clientOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 const databaseRetryDelayMs = 15000;
 let databaseRetryTimer = null;
 let shuttingDown = false;
 
-app.use(cors({ origin: clientOrigin }));
-app.use(express.json({ limit: "10kb" }));
-app.use("/uploads", express.static("uploads"));
-app.use("/api/health", healthRoutes);
-app.use("/api/players", playerRoutes);
-app.use("/api/leaderboard", leaderboardRoutes);
-app.use(notFound);
-app.use(errorHandler);
-
 const server = app.listen(port, () => {
   console.info(`SENET API listening on port ${port}.`);
 
-  if (!process.env.MONGODB_URI) {
+  if (!process.env.MONGODB_URI?.trim()) {
     console.info("MONGODB_URI is not configured; starting without a database connection.");
     return;
   }
@@ -37,7 +19,7 @@ const server = app.listen(port, () => {
 });
 
 function scheduleDatabaseRetry() {
-  if (shuttingDown || databaseRetryTimer) return;
+  if (shuttingDown || databaseRetryTimer || !process.env.MONGODB_URI?.trim()) return;
   databaseRetryTimer = setTimeout(() => {
     databaseRetryTimer = null;
     void connectToDatabaseWithRetry();

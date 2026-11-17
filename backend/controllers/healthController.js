@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
 export function getHealth(_request, response) {
-  const database = process.env.MONGODB_URI
-    ? mongoose.connection.readyState === 1
+  const isConfigured = Boolean(process.env.MONGODB_URI?.trim());
+  const database = !isConfigured
+    ? "not-configured"
+    : mongoose.connection.readyState === 1
       ? "connected"
-      : "disconnected"
-    : "not-configured";
+      : "disconnected";
 
   response.status(200).json({
     status: "ok",
