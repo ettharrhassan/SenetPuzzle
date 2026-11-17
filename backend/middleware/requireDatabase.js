@@ -1,10 +1,12 @@
-import mongoose from "mongoose";
 
-export default function requireDatabase(_request, _response, next) {
-  if (mongoose.connection.readyState !== 1) {
-    const error = new Error("The database is not connected. Start MongoDB and try again.");
+import { connectToDatabase } from "../config/db.js";
+
+export default async function requireDatabase(_request, _response, next) {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (error) {
     error.statusCode = 503;
-    return next(error);
+    next(error);
   }
-  next();
 }
