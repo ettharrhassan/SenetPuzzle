@@ -233,7 +233,7 @@ export const translations = {
     correctPlacement: "تم وضع القطعة الصحيحة!",
     challengeComplete: "عاااااش",
     challengeCompleteDescription:
-      "اكتمل اللغز. جرّب مرة أخرى وحاول تحسن نتيجتك.",
+      "اكتمل اللغز. جرّب مرة تانية لو حابب تحسن نتيجتك.",
     rankings: "ترتيب المجتمع",
     welcomeEyebrow: `مرحبًا بك في ${APP_NAME}`,
     registrationDescription:
@@ -255,8 +255,6 @@ export const translations = {
     medium: "متوسط",
     hard: "صعب",
     challengeSymbols: `رموز ${APP_NAME}`,
-    challengeGarden: "فسيفساء الحديقة",
-    challengeSky: "سماء الليل",
     challengeRouteEasy: "Route Logo · سهل",
     challengeTeamMedium: "Group · متوسط",
     challengeTeamHard: "Family · صعب",
