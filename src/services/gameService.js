@@ -1,7 +1,10 @@
-const API_URL = (
+const configuredApiUrl = (
   import.meta.env.VITE_API_URL ||
-  (import.meta.env.DEV ? "http://localhost:5000/api" : "/api")
+  (import.meta.env.DEV
+    ? "http://localhost:5000/api"
+    : "https://senet-puzzle-backend.vercel.app/api")
 ).replace(/\/+$/, "");
+const API_URL = `${configuredApiUrl.replace(/(?:\/api)+$/i, "")}/api`;
 
 async function request(path, options = {}) {
   const response = await fetch(API_URL + path, {

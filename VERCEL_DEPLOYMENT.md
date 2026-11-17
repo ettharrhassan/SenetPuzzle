@@ -8,8 +8,11 @@ them as two Vercel projects connected to the same Git repository.
 1. Import the repository into Vercel and set **Root Directory** to `.`.
 2. Select the Vite framework preset. The build command is `npm run build` and
    the output directory is `dist`.
-3. Add `VITE_API_URL` as an environment variable. Set it to the API deployment
-   URL followed by `/api`, for example `https://your-api.vercel.app/api`.
+3. Set the frontend project's **Production** `VITE_API_URL` to
+   `https://senet-puzzle-backend.vercel.app/api`. The frontend defaults to
+   this URL if the variable is unset; the client normalizes it to exactly one
+   `/api` suffix. Set the same value for Preview if previews should use the
+   production backend.
 4. Deploy the frontend. `vercel.json` provides the SPA rewrite needed for
    React Router routes such as `/profile` and `/leaderboard`.
 
@@ -26,8 +29,8 @@ them as two Vercel projects connected to the same Git repository.
    - `CLIENT_ORIGIN`: the exact deployed frontend origin, without a trailing
      slash (for example `https://your-app.vercel.app`).
    - `MAX_FILE_SIZE_MB`: `10`.
-4. Deploy the backend, then set the frontend's `VITE_API_URL` to its URL plus
-   `/api` and redeploy the frontend.
+4. Deploy the backend and redeploy the frontend after changing
+   `VITE_API_URL`; Vite embeds this value at build time.
 
 For local development, the frontend defaults to
 `http://localhost:5000/api`; copy `.env.example` to `.env` only if you need to
