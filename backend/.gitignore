@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+/uploads/*
+!/uploads/puzzles/
+/uploads/puzzles/*
+!/uploads/puzzles/.gitkeep
+/puzzles/*
+!/puzzles/.gitkeep

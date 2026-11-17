@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="garden" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#DAF0E5"/>
+      <stop offset="1" stop-color="#9ED7C1"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#garden)"/>
+  <circle cx="300" cy="300" r="238" fill="#F8F3DE"/>
+  <path d="M300 75c60 93 60 357 0 450-60-93-60-357 0-450zm0 225c-93-60-225-60-225 0s132 60 225 0zm0 0c93-60 225-60 225 0s-132 60-225 0z" fill="#70B99B"/>
+  <path d="M300 142c-42 45-42 99 0 132 42-33 42-87 0-132zm0 184c-42 33-42 87 0 132 42-45 42-99 0-132z" fill="#F0B879"/>
+  <circle cx="300" cy="300" r="48" fill="#F4D46F"/>
+  <circle cx="128" cy="150" r="18" fill="#F3A886"/>
+  <circle cx="472" cy="450" r="18" fill="#F3A886"/>
+  <path d="m456 127 16-28 16 28zm-344 344 16-28 16 28z" fill="#5B9E82"/>
+</svg>
