@@ -1616,6 +1616,7 @@
 }
 
 .assembly-board {
+  position: relative;
   display: grid;
   width: min(100%, 1000px);
   aspect-ratio: auto;
@@ -1627,6 +1628,34 @@
   background: var(--color-background);
   box-shadow: inset 0 0 0 1px var(--color-border), inset 0 0 0 2px color-mix(in srgb, var(--color-surface) 70%, transparent);
   touch-action: manipulation;
+}
+
+.assembly-completion-image {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: contain;
+  background: var(--color-surface);
+  animation: jigsaw-piece-place 220ms ease-out both;
+}
+
+.puzzle-preview-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+
+.puzzle-reference-image {
+  display: block;
+  width: min(100%, 760px);
+  max-height: min(70vh, 680px);
+  margin: 0 auto;
+  border-radius: 12px;
+  object-fit: contain;
 }
 
 .assembly-slot {

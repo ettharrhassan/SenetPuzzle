@@ -9,11 +9,13 @@ import {
   FiChevronLeft,
   FiChevronRight,
   FiClock,
+  FiEye,
   FiMove,
   FiRefreshCw,
 } from "react-icons/fi";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
+import Modal from "../../components/common/Modal";
 import { CHALLENGES } from "../../constants/challenges";
 import { LEVELS } from "../../constants/levels";
 import JigsawPiece from "../../components/puzzle/JigsawPiece";
@@ -94,6 +96,8 @@ export default function Puzzle() {
   );
   const [feedback, setFeedback] = useState("");
   const [dragPreview, setDragPreview] = useState(null);
+  const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
+  const [showCompletedImage, setShowCompletedImage] = useState(false);
   const BackIcon = language === "ar" ? FiArrowRight : FiArrowLeft;
   const PreviousIcon = language === "ar" ? FiChevronRight : FiChevronLeft;
   const NextIcon = language === "ar" ? FiChevronLeft : FiChevronRight;
@@ -101,6 +105,12 @@ export default function Puzzle() {
   const remainingPieces = pieceOrder.filter(
     (pieceId) => !placedPieces.has(pieceId),
   );
+
+  useEffect(() => {
+    if (!showCompletedImage) return undefined;
+    const timeoutId = window.setTimeout(() => navigate("/results"), 2500);
+    return () => window.clearTimeout(timeoutId);
+  }, [showCompletedImage, navigate]);
 
   useEffect(() => {
     if (!player || !challengeId || !difficulty) return;
@@ -201,6 +211,7 @@ export default function Puzzle() {
     setStarted(false);
     setFeedback("");
     setDragPreview(null);
+    setShowCompletedImage(false);
   }
 
   function placePiece(pieceId, slotIndex) {
@@ -242,7 +253,7 @@ export default function Puzzle() {
         mistakes,
         completionTimeSeconds: seconds,
       });
-      navigate("/results");
+      setShowCompletedImage(true);
     }
   }
 
@@ -448,6 +459,16 @@ export default function Puzzle() {
           <span className="challenge-badge">
             {t("levelPieceCount", { count: pieceCount })}
           </span>
+          <Button
+            aria-label={t("previewImage")}
+            className="puzzle-preview-button"
+            onClick={() => setIsImagePreviewOpen(true)}
+            title={t("previewImage")}
+            variant="secondary"
+          >
+            <FiEye aria-hidden="true" />
+            {t("previewImage")}
+          </Button>
         </div>
 
         <div
@@ -519,6 +540,13 @@ export default function Puzzle() {
               </div>
             );
           })}
+          {showCompletedImage && (
+            <img
+              alt={t("completedImage")}
+              className="assembly-completion-image"
+              src={selectedChallenge?.image}
+            />
+          )}
         </div>
 
         <div className="assembly-progress" aria-live="polite">
@@ -602,6 +630,18 @@ export default function Puzzle() {
         </div>
 
       </Card>
+
+      <Modal
+        open={isImagePreviewOpen}
+        onClose={() => setIsImagePreviewOpen(false)}
+        title={t("previewImage")}
+      >
+        <img
+          alt={t("previewImage")}
+          className="puzzle-reference-image"
+          src={selectedChallenge?.image}
+        />
+      </Modal>
 
       {dragPreview &&
         createPortal(
