@@ -7,7 +7,7 @@ const puzzleAttemptSchema = new mongoose.Schema(
     playerName: { type: String, required: true, trim: true, maxlength: 50 },
     cycleNumber: { type: Number, required: true, min: 1, max: 999 },
     challengeId: { type: String, required: true, trim: true },
-    difficulty: { type: String, required: true, enum: ["pieces-50", "pieces-75", "pieces-100"] },
+    difficulty: { type: String, required: true, enum: ["pieces-15", "pieces-25", "pieces-50"] },
     completionTimeSeconds: { type: Number, required: true, min: 0, validate: Number.isInteger },
     moves: { type: Number, required: true, min: 1, validate: Number.isInteger },
   },

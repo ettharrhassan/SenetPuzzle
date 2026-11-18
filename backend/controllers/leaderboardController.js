@@ -21,7 +21,7 @@ export async function saveAttempt(request, response) {
   if (
     attemptId.length < 8 ||
     !challengeId ||
-    !["pieces-50", "pieces-75", "pieces-100"].includes(difficulty) ||
+    !["pieces-15", "pieces-25", "pieces-50"].includes(difficulty) ||
     !Number.isInteger(completionTimeSeconds) ||
     completionTimeSeconds < 0 ||
     !Number.isInteger(moves) ||
@@ -58,7 +58,7 @@ export async function getLeaderboard(request, response) {
   if (
     typeof challengeId !== "string" ||
     !challengeId.trim() ||
-    !["pieces-50", "pieces-75", "pieces-100"].includes(difficulty) ||
+    !["pieces-15", "pieces-25", "pieces-50"].includes(difficulty) ||
     !["time", "moves"].includes(sortBy)
   ) {
     return response.status(400).json({

@@ -10,7 +10,7 @@ export const CHALLENGES = [
     difficultyKey: "easy",
     art: "route",
     image: routeEasyImage,
-    levelId: "pieces-50",
+    levelId: "pieces-15",
   },
   {
     id: "team-medium-75",
@@ -19,7 +19,7 @@ export const CHALLENGES = [
     difficultyKey: "medium",
     art: "team",
     image: teamMediumImage,
-    levelId: "pieces-75",
+    levelId: "pieces-25",
   },
   {
     id: "team-hard-100",
@@ -28,6 +28,6 @@ export const CHALLENGES = [
     difficultyKey: "hard",
     art: "gathering",
     image: teamHardImage,
-    levelId: "pieces-100",
+    levelId: "pieces-50",
   },
 ];

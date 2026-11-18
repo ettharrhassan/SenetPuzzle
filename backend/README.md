@@ -20,7 +20,7 @@ HTTP server and database connection on shutdown.
 - `POST /api/players` saves the entered name and cycle number in MongoDB.
 - `POST /api/leaderboard/attempts` records a completed puzzle. The server uses
   the registered player profile rather than trusting a name sent with a score.
-- `GET /api/leaderboard?challengeId=...&difficulty=pieces-50&sortBy=time`
+- `GET /api/leaderboard?challengeId=...&difficulty=pieces-15&sortBy=time`
   returns completed attempts' personal bests for that image and piece count.
   Set `sortBy=moves` to rank by fewest moves.
 
