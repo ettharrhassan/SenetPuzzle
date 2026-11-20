@@ -33,11 +33,11 @@ remain available across devices and Vercel invocations. Uploads are limited to
 about 1.3 MB after resizing. `DELETE /api/images/:imageId` requires the
 `IMAGE_ADMIN_TOKEN` environment variable and a matching Bearer token.
 
-Vercel routes `/api/*` through `api/[...path].js`, which connects to MongoDB
-before forwarding the original request to the shared Express application.
-Configure `MONGODB_URI` and `CLIENT_ORIGIN` in the Vercel project's environment
-variables. A failed or missing database connection returns HTTP 503 without
-exposing connection details.
+Vercel detects `server.js` as the Express entry point and sends all API paths
+through the Express router. Keep the backend project's Root Directory set to
+`backend`. Configure `MONGODB_URI`, `CLIENT_ORIGIN`, and `IMAGE_ADMIN_TOKEN`
+in the Vercel project's environment variables. A failed or missing database
+connection returns HTTP 503 without exposing connection details.
 
 MongoDB must be configured for the shared image gallery to work. Keep
 `IMAGE_ADMIN_TOKEN` private and configure it on the backend host to enable

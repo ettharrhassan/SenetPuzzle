@@ -7,10 +7,14 @@ const configuredApiUrl = (
 const API_URL = `${configuredApiUrl.replace(/(?:\/api)+$/i, "")}/api`;
 
 async function imageRequest(path, options = {}) {
+  const headers = { ...options.headers };
+  if (options.body !== undefined && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
   const response = await fetch(`${API_URL}/images${path}`, {
     ...options,
     cache: "no-store",
-    headers: { "Content-Type": "application/json", ...options.headers },
+    headers,
   });
   if (response.status === 204) return null;
   const data = await response.json().catch(() => ({}));
@@ -43,12 +47,16 @@ export async function deleteCommunityImage(id, adminToken) {
 }
 
 async function request(path, options = {}) {
+  const headers = { ...options.headers };
+  if (options.body !== undefined && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
   const response = await fetch(API_URL + path, {
     ...options,
     ...(options.method === undefined || options.method === "GET"
       ? { cache: "no-store" }
       : {}),
-    headers: { "Content-Type": "application/json", ...options.headers },
+    headers,
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
