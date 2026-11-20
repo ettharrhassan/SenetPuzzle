@@ -28,7 +28,7 @@ them as two Vercel projects connected to the same Git repository.
      `VITE_` prefix.
    - `CLIENT_ORIGIN`: the exact deployed frontend origin, without a trailing
      slash (for example `https://your-app.vercel.app`).
-   - `MAX_FILE_SIZE_MB`: `10`.
+   - `MAX_FILE_SIZE_MB`: `3` (the backend caps file uploads at 3 MB).
    - `IMAGE_ADMIN_TOKEN`: a long random secret used to authorize shared image
      deletion. Keep it only in the backend project's environment settings.
 4. Deploy the backend and redeploy the frontend after changing

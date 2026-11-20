@@ -18,6 +18,7 @@ const ProfilePage = lazy(() =>
 );
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Challenges = lazy(() => import("./pages/Challenges/Challenges"));
+const MediumGallery = lazy(() => import("./pages/Levels/MediumGallery"));
 const InProgress = lazy(() =>
   import("./pages/Challenges/Challenges").then((module) => ({ default: module.InProgress })),
 );
@@ -43,6 +44,11 @@ function AppLayout() {
               <Route path="/challenges" element={
                 <Suspense fallback={<Loader className="loader--panel" type="challenge" />}>
                   <Challenges />
+                </Suspense>
+              } />
+              <Route path="/medium" element={
+                <Suspense fallback={<Loader className="loader--panel" type="challenge" />}>
+                  <MediumGallery />
                 </Suspense>
               } />
               <Route path="/in-progress" element={

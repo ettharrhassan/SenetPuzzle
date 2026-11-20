@@ -8,7 +8,8 @@ const API_URL = `${configuredApiUrl.replace(/(?:\/api)+$/i, "")}/api`;
 
 async function imageRequest(path, options = {}) {
   const headers = { ...options.headers };
-  if (options.body !== undefined && !headers["Content-Type"]) {
+  const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
+  if (options.body !== undefined && !isFormData && !headers["Content-Type"]) {
     headers["Content-Type"] = "application/json";
   }
   const response = await fetch(`${API_URL}/images${path}`, {
@@ -31,10 +32,13 @@ export async function getCommunityImages() {
   return data.images;
 }
 
-export async function uploadCommunityImage(name, dataUrl) {
+export async function uploadCommunityImage(name, file) {
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("image", file, "group-photo.jpg");
   const data = await imageRequest("", {
     method: "POST",
-    body: JSON.stringify({ name, dataUrl }),
+    body: formData,
   });
   return data.image;
 }

@@ -27,10 +27,11 @@ HTTP server and database connection on shutdown.
 The leaderboard starts empty and only shows actual completed attempts. No demo
 players or fabricated scores are inserted.
 
-`GET /api/images` lists shared group photos and `POST /api/images` adds one.
-Images are resized in the browser and stored in MongoDB as JPEG data, so they
-remain available across devices and Vercel invocations. Uploads are limited to
-about 1.3 MB after resizing. `DELETE /api/images/:imageId` requires the
+`GET /api/images` lists shared group photos and `POST /api/images` accepts a
+`multipart/form-data` upload with `name` and `image` fields. Multer keeps the
+resized file in memory for the request; the controller stores image data in
+MongoDB, so photos remain available across devices and Vercel invocations.
+Uploads are capped at 3 MB. `DELETE /api/images/:imageId` requires the
 `IMAGE_ADMIN_TOKEN` environment variable and a matching Bearer token.
 
 Vercel detects `server.js` as the Express entry point and sends all API paths
