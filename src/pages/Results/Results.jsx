@@ -7,7 +7,7 @@ import {
 } from "react-icons/fi";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
-import { CHALLENGES } from "../../constants/challenges";
+import { CHALLENGES, UPLOADED_CHALLENGE_ID } from "../../constants/challenges";
 import { LEVELS } from "../../constants/levels";
 import useLanguage from "../../hooks/useLanguage";
 import usePlayer from "../../hooks/usePlayer";
@@ -71,7 +71,7 @@ export default function Results() {
             <strong>{t(level?.titleKey ?? "level50")}</strong>
           </div>
         </div>
-        <p className="results-challenge">{t(challenge?.titleKey ?? "puzzle")}</p>
+        <p className="results-challenge">{t(challenge?.titleKey ?? (result?.challengeId?.startsWith(`${UPLOADED_CHALLENGE_ID}:`) ? "uploadGroupImage" : "puzzle"))}</p>
         <div aria-live="polite" className={`save-status save-status--${saveState.status}`}>
           {saveState.status === "saving" ? (
             t("savingAttempt")

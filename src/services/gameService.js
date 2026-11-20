@@ -6,6 +6,42 @@ const configuredApiUrl = (
 ).replace(/\/+$/, "");
 const API_URL = `${configuredApiUrl.replace(/(?:\/api)+$/i, "")}/api`;
 
+async function imageRequest(path, options = {}) {
+  const response = await fetch(`${API_URL}/images${path}`, {
+    ...options,
+    cache: "no-store",
+    headers: { "Content-Type": "application/json", ...options.headers },
+  });
+  if (response.status === 204) return null;
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const error = new Error(data.message || `Image request failed (${response.status}).`);
+    error.status = response.status;
+    throw error;
+  }
+  return data;
+}
+
+export async function getCommunityImages() {
+  const data = await imageRequest("");
+  return data.images;
+}
+
+export async function uploadCommunityImage(name, dataUrl) {
+  const data = await imageRequest("", {
+    method: "POST",
+    body: JSON.stringify({ name, dataUrl }),
+  });
+  return data.image;
+}
+
+export async function deleteCommunityImage(id, adminToken) {
+  return imageRequest(`/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${adminToken}` },
+  });
+}
+
 async function request(path, options = {}) {
   const response = await fetch(API_URL + path, {
     ...options,

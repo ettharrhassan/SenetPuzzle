@@ -27,7 +27,11 @@ HTTP server and database connection on shutdown.
 The leaderboard starts empty and only shows actual completed attempts. No demo
 players or fabricated scores are inserted.
 
-Uploaded puzzle files will be stored in `uploads/puzzles/`. Multer is configured for JPG, JPEG, PNG, and WebP with a configurable size limit. The upload endpoint and MongoDB image metadata model will be added in the image-management phase.
+`GET /api/images` lists shared group photos and `POST /api/images` adds one.
+Images are resized in the browser and stored in MongoDB as JPEG data, so they
+remain available across devices and Vercel invocations. Uploads are limited to
+about 1.3 MB after resizing. `DELETE /api/images/:imageId` requires the
+`IMAGE_ADMIN_TOKEN` environment variable and a matching Bearer token.
 
 Vercel routes `/api/*` through `api/[...path].js`, which connects to MongoDB
 before forwarding the original request to the shared Express application.
@@ -35,10 +39,8 @@ Configure `MONGODB_URI` and `CLIENT_ORIGIN` in the Vercel project's environment
 variables. A failed or missing database connection returns HTTP 503 without
 exposing connection details.
 
-Multer's disk storage and `/uploads` static serving are for local development.
-Vercel's filesystem is ephemeral and may be read-only outside temporary
-locations, so uploaded files are not durable or guaranteed to persist there.
-The upload endpoint is not currently mounted; durable production uploads will
-need external object storage before that feature is enabled.
+MongoDB must be configured for the shared image gallery to work. Keep
+`IMAGE_ADMIN_TOKEN` private and configure it on the backend host to enable
+authorized deletion.
 
 Authentic classic jigsaw piece generation is intentionally not implemented yet.

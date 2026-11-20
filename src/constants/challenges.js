@@ -2,6 +2,8 @@ import routeEasyImage from "../assets/images/route-easy-50.png";
 import teamMediumImage from "../assets/images/team-medium-75.png";
 import teamHardImage from "../assets/images/team-hard-100.png";
 
+export const UPLOADED_CHALLENGE_ID = "community-image";
+
 export const CHALLENGES = [
   {
     id: "route-easy-50",

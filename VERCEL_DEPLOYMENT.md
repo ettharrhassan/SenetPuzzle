@@ -29,6 +29,8 @@ them as two Vercel projects connected to the same Git repository.
    - `CLIENT_ORIGIN`: the exact deployed frontend origin, without a trailing
      slash (for example `https://your-app.vercel.app`).
    - `MAX_FILE_SIZE_MB`: `10`.
+   - `IMAGE_ADMIN_TOKEN`: a long random secret used to authorize shared image
+     deletion. Keep it only in the backend project's environment settings.
 4. Deploy the backend and redeploy the frontend after changing
    `VITE_API_URL`; Vite embeds this value at build time.
 
@@ -36,12 +38,10 @@ For local development, the frontend defaults to
 `http://localhost:5000/api`; copy `.env.example` to `.env` only if you need to
 override that value. Never commit `.env` files.
 
-## Before enabling image uploads in production
-
-Vercel Functions do not provide persistent local storage. Files written under
-`backend/uploads` will not be durable between invocations, so keep puzzle
-uploads local during development and use Cloudinary or another object storage
-service before enabling production uploads.
+Shared group photos are stored in MongoDB, not on the Vercel function
+filesystem. Configure the backend's `MONGODB_URI` and `IMAGE_ADMIN_TOKEN`,
+then redeploy the backend and frontend to enable the shared gallery and
+administrator deletion.
 
 Atlas also needs to allow connections from the deployed backend. Vercel uses
 dynamic egress IPs by default; use a supported static egress/private network

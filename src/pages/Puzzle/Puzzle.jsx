@@ -16,12 +16,13 @@ import {
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
-import { CHALLENGES } from "../../constants/challenges";
+import { CHALLENGES, UPLOADED_CHALLENGE_ID } from "../../constants/challenges";
 import { LEVELS } from "../../constants/levels";
 import JigsawPiece from "../../components/puzzle/JigsawPiece";
 import useLanguage from "../../hooks/useLanguage";
 import usePlayer from "../../hooks/usePlayer";
 import { createJigsawLayout } from "../../utils/jigsaw";
+import { getCommunityImages } from "../../services/gameService";
 
 const JIGSAW_LAYOUTS = new Map(
   LEVELS.map((level) => [
@@ -52,6 +53,11 @@ export default function Puzzle() {
   const selectedChallenge = CHALLENGES.find(
     (challenge) => challenge.id === challengeId,
   );
+  const communityImageId = challengeId?.startsWith(`${UPLOADED_CHALLENGE_ID}:`)
+    ? challengeId.slice(UPLOADED_CHALLENGE_ID.length + 1)
+    : null;
+  const [communityImage, setCommunityImage] = useState(null);
+  const puzzleImage = communityImageId ? communityImage?.dataUrl : selectedChallenge?.image;
   const pieceCount = selectedLevel?.pieces ?? 50;
   const columns = selectedLevel?.columns ?? 10;
   const rows = selectedLevel?.rows ?? 5;
@@ -105,6 +111,22 @@ export default function Puzzle() {
   const remainingPieces = pieceOrder.filter(
     (pieceId) => !placedPieces.has(pieceId),
   );
+
+  useEffect(() => {
+    if (!communityImageId) {
+      setCommunityImage(null);
+      return undefined;
+    }
+    let active = true;
+    getCommunityImages()
+      .then((images) => {
+        if (active) setCommunityImage(images.find((image) => image.id === communityImageId) ?? null);
+      })
+      .catch(() => {
+        if (active) setCommunityImage(null);
+      });
+    return () => { active = false; };
+  }, [communityImageId]);
 
   useEffect(() => {
     if (!showCompletedImage) return undefined;
@@ -422,7 +444,7 @@ export default function Puzzle() {
             {t("changeChallenge")}
           </Link>
           <span className="section-kicker">{t("stepTwo")}</span>
-          <h1>{t(selectedChallenge?.titleKey ?? "puzzle")}</h1>
+          <h1>{t(selectedChallenge?.titleKey ?? (communityImageId ? "uploadGroupImage" : "puzzle"))}</h1>
         </div>
         <Button onClick={restartPuzzle} variant="secondary">
           <FiRefreshCw aria-hidden="true" />
@@ -519,7 +541,7 @@ export default function Puzzle() {
                       : "jigsaw-piece jigsaw-piece--placeholder"
                   }
                   clipId={"board-piece-" + pieceCount + "-" + slotIndex}
-                  image={selectedChallenge?.image}
+                  image={puzzleImage}
                   piece={jigsawLayout.pieces[slotIndex]}
                   placeholder={!isPlaced}
                   style={{
@@ -544,7 +566,7 @@ export default function Puzzle() {
             <img
               alt={t("completedImage")}
               className="assembly-completion-image"
-              src={selectedChallenge?.image}
+              src={puzzleImage}
             />
           )}
         </div>
@@ -604,7 +626,7 @@ export default function Puzzle() {
                 <JigsawPiece
                   className="jigsaw-piece jigsaw-piece--tray"
                   clipId={`tray-piece-${pieceCount}-${pieceId}`}
-                  image={selectedChallenge?.image}
+                  image={puzzleImage}
                   piece={jigsawLayout.pieces[pieceId]}
                 />
                 </button>
@@ -639,7 +661,7 @@ export default function Puzzle() {
         <img
           alt={t("previewImage")}
           className="puzzle-reference-image"
-          src={selectedChallenge?.image}
+          src={puzzleImage}
         />
       </Modal>
 
@@ -659,7 +681,7 @@ export default function Puzzle() {
             <JigsawPiece
               className="jigsaw-piece jigsaw-piece--drag"
               clipId={`drag-piece-${pieceCount}-${dragPreview.pieceId}`}
-              image={selectedChallenge?.image}
+              image={puzzleImage}
               piece={jigsawLayout.pieces[dragPreview.pieceId]}
             />
             <span

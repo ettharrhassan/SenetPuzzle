@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import PlayerContext from "./PlayerContext";
-import { CHALLENGES } from "../constants/challenges";
+import { CHALLENGES, UPLOADED_CHALLENGE_ID } from "../constants/challenges";
 import { LEVELS } from "../constants/levels";
 import { registerPlayer as savePlayer } from "../services/gameService";
 
@@ -85,7 +85,7 @@ function readStoredState() {
       Number(player.cycleNumber) > 0;
     const challengeId = CHALLENGES.some(
       (challenge) => challenge.id === parsed.challengeId,
-    )
+    ) || parsed.challengeId?.startsWith(`${UPLOADED_CHALLENGE_ID}:`)
       ? parsed.challengeId
       : null;
     const difficulty = LEVELS.some((level) => level.id === parsed.difficulty)
@@ -113,7 +113,7 @@ function readStoredState() {
           .map((savedProgress) => {
             const validChallenge = CHALLENGES.some(
               (challenge) => challenge.id === savedProgress?.challengeId,
-            );
+            ) || savedProgress?.challengeId?.startsWith(`${UPLOADED_CHALLENGE_ID}:`);
             const validDifficulty = LEVELS.some(
               (level) => level.id === savedProgress?.difficulty,
             );

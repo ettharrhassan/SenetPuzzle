@@ -8,6 +8,7 @@ import notFound from "./middleware/notFound.js";
 import healthRoutes from "./routes/healthRoutes.js";
 import playerRoutes from "./routes/playerRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
+import communityImageRoutes from "./routes/communityImageRoutes.js";
 
 const app = express();
 const backendDirectory = fileURLToPath(new URL(".", import.meta.url));
@@ -18,7 +19,7 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }));
-app.use(express.json({ limit: "10kb" }));
+app.use(express.json({ limit: "2mb" }));
 
 if (process.env.VERCEL !== "1") {
   app.use("/uploads", express.static(resolve(backendDirectory, "uploads")));
@@ -27,6 +28,7 @@ if (process.env.VERCEL !== "1") {
 app.use("/api/health", healthRoutes);
 app.use("/api/players", playerRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
+app.use("/api/images", communityImageRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
